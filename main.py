@@ -1,54 +1,41 @@
 from las_vegas_max_3sat import las_vegas_max_3sat
-from Reading import parse_dimacs_line, load_dimacs_file
-import time 
-
-filepath = "uf20-0284.cnf" 
+from Reading import load_dimacs_file
+from experimental import run_experiments, print_summary
+import os
+import glob
 
 if __name__ == "__main__":
-    # # Exemple simple : 4 variables, 5 clauses
-    # # Format interne : liste de listes d'entiers
+    # Simple example with 4 variables and 5 clauses
+
+    # print("=" * 50)
+    # print("SIMPLE EXAMPLE")
+    # print("=" * 50)
     # clauses_exemple = [
-    #     [1, 2, 1, -3],    # x1 ou x2 ou non-x3
-    #     [-1, -2, 3],
-    #     [2, -3, 4],
+    #     [1, 2, 1, -3],      # x1 or x2 or not-x3
+    #     [-1, -2, 3],        # not-x1 or not-x2 or x3
+    #     [2, -3, 4],         # x2 or not-x3 or x4
     #     [-2, 3, -4],
     #     [1, 3, 4]
     # ]
     # nb_variables = 4
 
-    # print("Recherche d'une solution satisfaisant >= 7/8 des clauses...")
+    # print("Searching for a solution satisfying >= 7/8 of the clauses...")
     # solution, score, nb_essais = las_vegas_max_3sat(nb_variables, clauses_exemple)
 
-    # print(f"Succès en {nb_essais} essai(s) !")
-    # print(f"Clauses satisfaites : {score}/{len(clauses_exemple)}")
-    # print(f"Assignation finale : {solution[1:]}") # On ignore l'index 0
+    # print(f"Success in {nb_essais} attempt(s)!")
+    # print(f"Clauses satisfied: {score}/{len(clauses_exemple)}")
+    # print(f"Final assignment: {solution[1:]}") # We ignore index 0
 
+    # Run experiments on SATLIB benchmarks
+    print("\n" + "=" * 50)
+    print("EXPERIMENTS ON SATLIB BENCHMARKS")
+    print("=" * 50)
+    
+    # Get all .cnf files from uf20-91 directory
+    test_files = glob.glob("./uf20-91/*.cnf")
+    print(f"Found {len(test_files)} test files")
+    num_runs = 100
+    
+    results = run_experiments(test_files, num_runs)
 
-    fichier_test = filepath
-
-    try:
-        # Chargement
-        print(f"Lecture du fichier : {fichier_test}...")
-        n, clauses = load_dimacs_file(fichier_test)
-        print(f"Variables: {n}, Clauses: {len(clauses)}")
-        
-        # Chronométrage
-        start_time = time.time()
-        
-        # Résolution
-        sol, score, essais = las_vegas_max_3sat(n, clauses)
-        
-        end_time = time.time()
-        duree = end_time - start_time
-        
-        # Résultats
-        ratio = score / len(clauses)
-        print("-" * 30)
-        print(f"Résultat trouvé en {duree:.6f} secondes")
-        print(f"Nombre d'essais (itérations) : {essais}")
-        print(f"Clauses satisfaites : {score}/{len(clauses)} ({ratio:.2%})")
-        print(f"Le ratio est-il >= 7/8 (87.5%) ? {'OUI' if ratio >= 0.875 else 'NON'}")
-
-    except FileNotFoundError:
-        print(f"Erreur : Le fichier '{fichier_test}' est introuvable. Télécharge un fichier .cnf d'abord.")
-# %%
+    print_summary(results)

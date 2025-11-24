@@ -1,7 +1,7 @@
 def evaluate_assignment(assignment, clauses):
     """
-    Compte le nombre de clauses satisfaites par l'assignation.
-    assignment: liste de booléens (index 0 ignoré pour correspondre aux vars 1..n)
+    Counts the number of clauses satisfied by the assignment.
+    assignment: list of booleans (index 0 are ignored to keep indexing)
     """
     satisfied_count = 0
     for clause in clauses:
@@ -10,8 +10,10 @@ def evaluate_assignment(assignment, clauses):
             var_index = abs(literal)
             val = assignment[var_index]
             
-            # Si littéral positif (x), il faut que val soit True
-            # Si littéral négatif (-x), il faut que val soit False
+            # We put True for positive literal, False for negative
+            # If literal > 0, we want val to be True
+            # If literal < 0, we want val to be False
+            # So when we meet this condition, the clause is satisfied
             if (literal > 0 and val) or (literal < 0 and not val):
                 is_clause_sat = True
                 break

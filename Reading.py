@@ -13,7 +13,7 @@ def load_dimacs_file(filepath):
                 num_vars = int(parts[2])
                 continue
             
-            # Lecture des littéraux (on enlève le 0 final)
+            # Reading literals (remove the final 0)
             literals = [int(x) for x in line.split() if x != '0']
             if literals:
                 clauses.append(literals)
@@ -21,7 +21,7 @@ def load_dimacs_file(filepath):
     return num_vars, clauses
 
 def parse_dimacs_line(line):
-    """Extrait les littéraux d'une ligne de fichier DIMACS."""
+    """Extracts literals from a DIMACS file line."""
     parts = line.split()
-    # On ignore le '0' final s'il est présent et on convertit en int
+    # We ignore the final '0' if present and convert to int
     return [int(x) for x in parts if x not in ('0', '%')]
