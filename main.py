@@ -1,7 +1,6 @@
 from las_vegas_max_3sat import las_vegas_max_3sat
 from Reading import load_dimacs_file
 from experimental import run_experiments, print_summary
-import os
 import glob
 
 if __name__ == "__main__":
